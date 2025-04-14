@@ -135,7 +135,14 @@ export default function UpdateProfile() {
             </div>
           </div>
 
-          <div>
+          <div className="flex space-x-4">
+            <button
+              type="button"
+              onClick={() => navigate("/")}
+              className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Cancel
+            </button>
             <button
               type="submit"
               disabled={loading}

@@ -74,7 +74,8 @@ export default function Dashboard() {
                 <span
                   className={isDarkMode ? "text-gray-300" : "text-gray-600"}
                 >
-                  Welcome, {auth.currentUser?.email}
+                  Welcome,{" "}
+                  {auth.currentUser?.displayName || auth.currentUser?.email}
                 </span>
                 <button
                   onClick={() => navigate("/update-profile")}

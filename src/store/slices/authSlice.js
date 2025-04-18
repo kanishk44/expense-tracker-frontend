@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: null,
   token: null,
-  loading: false,
+  loading: true, // Start with loading true to check for existing session
   error: null,
   isPremium: false,
   isAuthenticated: false,
@@ -23,6 +23,7 @@ export const authSlice = createSlice({
       state.token = action.payload.token;
       state.error = null;
       state.isAuthenticated = true;
+      state.isPremium = action.payload.isPremium || false;
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -39,10 +40,23 @@ export const authSlice = createSlice({
     togglePremium: (state) => {
       state.isPremium = !state.isPremium;
     },
+    restoreSession: (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
+      state.isPremium = action.payload.isPremium || false;
+    },
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout, togglePremium } =
-  authSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+  togglePremium,
+  restoreSession,
+} = authSlice.actions;
 
 export default authSlice.reducer;

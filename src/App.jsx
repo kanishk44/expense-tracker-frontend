@@ -7,33 +7,36 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import ForgotPassword from "./components/ForgotPassword";
 import UpdateProfile from "./components/UpdateProfile";
+import AuthProvider from "./components/AuthProvider";
 
 function App() {
   return (
     <Provider store={store}>
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/update-profile"
-            element={
-              <PrivateRoute>
-                <UpdateProfile />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-        </Routes>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/update-profile"
+              element={
+                <PrivateRoute>
+                  <UpdateProfile />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
     </Provider>
   );
 }

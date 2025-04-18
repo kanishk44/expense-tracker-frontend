@@ -1,14 +1,35 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { togglePremium } from "../store/slices/authSlice";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 export default function PremiumButton() {
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const db = getFirestore();
+
+  const handleTogglePremium = async () => {
+    try {
+      // Update Firestore
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          isPremium: true,
+        },
+        { merge: true }
+      );
+
+      // Update Redux state
+      dispatch(togglePremium());
+    } catch (error) {
+      console.error("Error updating premium status:", error);
+    }
+  };
 
   return (
     <button
-      onClick={() => dispatch(togglePremium())}
+      onClick={handleTogglePremium}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className="fixed top-4 right-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-6 py-2 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"

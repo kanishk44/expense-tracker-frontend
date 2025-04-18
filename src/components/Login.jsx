@@ -8,6 +8,7 @@ import {
 } from "../store/slices/authSlice";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ export default function Login() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const db = getFirestore();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -36,7 +38,11 @@ export default function Login() {
       // Get the ID token
       const token = await user.getIdToken();
 
-      dispatch(loginSuccess({ user, token }));
+      // Fetch premium status from Firestore
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const isPremium = userDoc.exists() ? userDoc.data().isPremium : false;
+
+      dispatch(loginSuccess({ user, token, isPremium }));
       navigate("/");
     } catch (err) {
       console.error("Login error:", err);

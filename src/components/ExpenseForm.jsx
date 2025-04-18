@@ -53,6 +53,7 @@ export default function ExpenseForm() {
     (state) => state.expenses
   );
   const { user } = useSelector((state) => state.auth);
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   const db = getFirestore();
 
   useEffect(() => {
@@ -193,8 +194,16 @@ export default function ExpenseForm() {
   return (
     <div className="space-y-6">
       {/* Expense Form */}
-      <div className="bg-white shadow-sm rounded-lg p-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">
+      <div
+        className={`${
+          isDarkMode ? "bg-gray-800" : "bg-white"
+        } shadow-sm rounded-lg p-6`}
+      >
+        <h2
+          className={`text-lg font-medium ${
+            isDarkMode ? "text-white" : "text-gray-900"
+          } mb-4`}
+        >
           {editingExpense ? "Edit Expense" : "Add New Expense"}
         </h2>
         {error && (
@@ -228,7 +237,9 @@ export default function ExpenseForm() {
             <div>
               <label
                 htmlFor="amount"
-                className="block text-sm font-medium text-gray-700"
+                className={`block text-sm font-medium ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}
               >
                 Amount (₹)
               </label>
@@ -240,7 +251,11 @@ export default function ExpenseForm() {
                 required
                 min="0"
                 step="0.01"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className={`mt-1 block w-full rounded-md ${
+                  isDarkMode
+                    ? "bg-gray-700 border-gray-600 text-white"
+                    : "border-gray-300"
+                } shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm`}
                 placeholder="0.00"
                 disabled={submitting}
               />
@@ -249,7 +264,9 @@ export default function ExpenseForm() {
             <div>
               <label
                 htmlFor="category"
-                className="block text-sm font-medium text-gray-700"
+                className={`block text-sm font-medium ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}
               >
                 Category
               </label>
@@ -258,7 +275,11 @@ export default function ExpenseForm() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className={`mt-1 block w-full rounded-md ${
+                  isDarkMode
+                    ? "bg-gray-700 border-gray-600 text-white"
+                    : "border-gray-300"
+                } shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm`}
                 disabled={submitting}
               >
                 <option value="">Select a category</option>
@@ -273,7 +294,9 @@ export default function ExpenseForm() {
             <div>
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
+                className={`block text-sm font-medium ${
+                  isDarkMode ? "text-gray-300" : "text-gray-700"
+                }`}
               >
                 Description
               </label>
@@ -283,7 +306,11 @@ export default function ExpenseForm() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className={`mt-1 block w-full rounded-md ${
+                  isDarkMode
+                    ? "bg-gray-700 border-gray-600 text-white"
+                    : "border-gray-300"
+                } shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm`}
                 placeholder="Enter expense description"
                 disabled={submitting}
               />
@@ -295,7 +322,11 @@ export default function ExpenseForm() {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className={`inline-flex justify-center py-2 px-4 border ${
+                  isDarkMode
+                    ? "border-gray-600 text-gray-300 bg-gray-700 hover:bg-gray-600"
+                    : "border-gray-300 text-gray-700 bg-white hover:bg-gray-50"
+                } shadow-sm text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
               >
                 Cancel
               </button>
@@ -340,8 +371,16 @@ export default function ExpenseForm() {
       </div>
 
       {/* Expenses List */}
-      <div className="bg-white shadow-sm rounded-lg p-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">
+      <div
+        className={`${
+          isDarkMode ? "bg-gray-800" : "bg-white"
+        } shadow-sm rounded-lg p-6`}
+      >
+        <h2
+          className={`text-lg font-medium ${
+            isDarkMode ? "text-white" : "text-gray-900"
+          } mb-4`}
+        >
           Recent Expenses
         </h2>
         {loading ? (
@@ -368,58 +407,114 @@ export default function ExpenseForm() {
             </svg>
           </div>
         ) : expenses.length === 0 ? (
-          <p className="text-gray-500 text-center py-4">
+          <p
+            className={`text-center py-4 ${
+              isDarkMode ? "text-gray-400" : "text-gray-500"
+            }`}
+          >
             No expenses added yet
           </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              <thead className={isDarkMode ? "bg-gray-700" : "bg-gray-50"}>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    className={`px-6 py-3 text-left text-xs font-medium ${
+                      isDarkMode ? "text-gray-300" : "text-gray-500"
+                    } uppercase tracking-wider`}
+                  >
                     Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    className={`px-6 py-3 text-left text-xs font-medium ${
+                      isDarkMode ? "text-gray-300" : "text-gray-500"
+                    } uppercase tracking-wider`}
+                  >
                     Category
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    className={`px-6 py-3 text-left text-xs font-medium ${
+                      isDarkMode ? "text-gray-300" : "text-gray-500"
+                    } uppercase tracking-wider`}
+                  >
                     Description
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    className={`px-6 py-3 text-right text-xs font-medium ${
+                      isDarkMode ? "text-gray-300" : "text-gray-500"
+                    } uppercase tracking-wider`}
+                  >
                     Amount
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    className={`px-6 py-3 text-right text-xs font-medium ${
+                      isDarkMode ? "text-gray-300" : "text-gray-500"
+                    } uppercase tracking-wider`}
+                  >
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody
+                className={`${
+                  isDarkMode
+                    ? "bg-gray-800 divide-gray-700"
+                    : "bg-white divide-gray-200"
+                }`}
+              >
                 {expenses.map((expense) => (
                   <tr key={expense.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td
+                      className={`px-6 py-4 whitespace-nowrap text-sm ${
+                        isDarkMode ? "text-gray-300" : "text-gray-500"
+                      }`}
+                    >
                       {new Date(expense.date).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          isDarkMode
+                            ? "bg-blue-900 text-blue-200"
+                            : "bg-blue-100 text-blue-800"
+                        }`}
+                      >
                         {expense.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td
+                      className={`px-6 py-4 whitespace-nowrap text-sm ${
+                        isDarkMode ? "text-gray-300" : "text-gray-900"
+                      }`}
+                    >
                       {expense.description}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-right text-gray-900">
+                    <td
+                      className={`px-6 py-4 whitespace-nowrap text-sm text-right ${
+                        isDarkMode ? "text-gray-300" : "text-gray-900"
+                      }`}
+                    >
                       ₹{expense.amount.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         onClick={() => handleEdit(expense)}
-                        className="text-blue-600 hover:text-blue-900 mr-3"
+                        className={`${
+                          isDarkMode
+                            ? "text-blue-400 hover:text-blue-300"
+                            : "text-blue-600 hover:text-blue-900"
+                        } mr-3`}
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(expense.id)}
-                        className="text-red-600 hover:text-red-900"
+                        className={`${
+                          isDarkMode
+                            ? "text-red-400 hover:text-red-300"
+                            : "text-red-600 hover:text-red-900"
+                        }`}
                       >
                         Delete
                       </button>
@@ -427,15 +522,21 @@ export default function ExpenseForm() {
                   </tr>
                 ))}
               </tbody>
-              <tfoot className="bg-gray-50">
+              <tfoot className={isDarkMode ? "bg-gray-700" : "bg-gray-50"}>
                 <tr>
                   <td
                     colSpan="4"
-                    className="px-6 py-3 text-right text-sm font-medium text-gray-900"
+                    className={`px-6 py-3 text-right text-sm font-medium ${
+                      isDarkMode ? "text-gray-300" : "text-gray-900"
+                    }`}
                   >
                     Total
                   </td>
-                  <td className="px-6 py-3 text-right text-sm font-medium text-gray-900">
+                  <td
+                    className={`px-6 py-3 text-right text-sm font-medium ${
+                      isDarkMode ? "text-gray-300" : "text-gray-900"
+                    }`}
+                  >
                     ₹
                     {expenses
                       .reduce((sum, expense) => sum + expense.amount, 0)
